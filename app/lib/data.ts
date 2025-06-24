@@ -11,6 +11,34 @@ import { formatCurrency } from './utils';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
+const sigmaSQL = postgres({
+  host: process.env.PG_HOST_LOCAWEB,
+  port: Number(process.env.PG_PORT_LOCAWEB),
+  user: process.env.PG_USER_LOCAWEB,
+  password: process.env.PG_PASSWORD_LOCAWEB?.trim(),
+  database: process.env.PG_DBNAME_LOCAWEB,
+  ssl: 'require'
+});
+
+export async function getSigmaDataStats() {
+  try {
+    const data = await sigmaSQL`
+      SELECT 
+        COUNT(*) as total_invoices,
+        SUM(valor) as total_amount,
+        AVG(valor) as average_amount,
+        COUNT(CASE WHEN situacao = '1' THEN 1 END) as ativo,
+        COUNT(CASE WHEN situacao = '2' THEN 1 END) as cancelado
+      FROM public.nfs
+      WHERE situacao IN ('1')
+    `;
+    return data[0];
+  } catch (error) {
+    console.error('Failed to fetch Sigma data stats:', error);
+    throw new Error('Failed to fetch Sigma data stats.');
+  }
+}
+
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
