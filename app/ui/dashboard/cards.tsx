@@ -5,7 +5,7 @@ import {
   InboxIcon,
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchCardData, getSigmaDataStats } from '@/app/lib/data';
+import { getSigmaDataStats } from '@/app/lib/data';
 import { formatCurrency } from "@/app/lib/utils";
 
 
@@ -18,12 +18,12 @@ const iconMap = {
 
 export default async function CardWrapper() {
   
-  const {
-    numberOfInvoices,
-    numberOfCustomers,
-    // totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+  // const {
+  //   numberOfInvoices,
+  //   numberOfCustomers,
+  //   // totalPaidInvoices,
+  //   totalPendingInvoices,
+  // } = await fetchCardData();
 
   const { total_amount, total_last_12_months, total_ytd, total_current_month } = await getSigmaDataStats();
 
