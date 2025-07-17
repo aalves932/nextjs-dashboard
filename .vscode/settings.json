@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "sigmadb.postgresql.dbaas.com.br",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "sigmaDB",
+      "database": "sigmadb",
+      "username": "sigmadb",
+      "password": "H$kfCR!2U5"
+    }
+  ]
+}

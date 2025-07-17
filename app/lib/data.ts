@@ -23,14 +23,16 @@ const sigmaSQL = postgres({
 export async function getSigmaDataStats() {
   try {
     const data = await sigmaSQL`
-      SELECT 
-        COUNT(*) as total_invoices,
-        SUM(valor) as total_amount,
-        AVG(valor) as average_amount,
-        COUNT(CASE WHEN situacao = '1' THEN 1 END) as ativo,
-        COUNT(CASE WHEN situacao = '2' THEN 1 END) as cancelado
-      FROM public.nfs
-      WHERE situacao IN ('1')
+   SELECT 
+    COUNT(*) as total_invoices,
+    SUM(valor) as total_amount,
+    SUM(CASE WHEN data_emissao >= (CURRENT_DATE - INTERVAL '12 months') THEN valor ELSE 0 END) AS total_last_12_months,
+    SUM(CASE WHEN data_emissao >= date_trunc('year', CURRENT_DATE) THEN valor ELSE 0 END) AS total_ytd,
+    SUM(CASE WHEN data_emissao >= date_trunc('month', CURRENT_DATE) THEN valor ELSE 0 END) AS total_current_month,
+    COUNT(CASE WHEN situacao = '1' THEN 1 END) as ativo,
+	COUNT(CASE WHEN situacao = '2' THEN 1 END) as cancelado
+  FROM public.nfs
+  WHERE situacao = '1'
     `;
     return data[0];
   } catch (error) {

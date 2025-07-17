@@ -25,15 +25,15 @@ export default async function CardWrapper() {
     totalPendingInvoices,
   } = await fetchCardData();
 
-  const { total_amount } = await getSigmaDataStats();
+  const { total_amount, total_last_12_months, total_ytd, total_current_month } = await getSigmaDataStats();
 
   return (
     <>
       {/* <Card title="Collected" value={totalPaidInvoices} type="collected" /> */}
       <Card title="Faturamento Total" value={formatCurrency(total_amount*100)} type="collected"/>
-      <Card title="Faturamento Pendente" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-      <Card title="Total Customers" value={numberOfCustomers} type="customers"/>
+      <Card title="Faturamento 12 Meses" value={formatCurrency(total_last_12_months*100)} type="pending" />
+      <Card title="Faturamento YTD" value={formatCurrency(total_ytd*100)} type="invoices" />
+      <Card title="Faturamento do Mês" value={formatCurrency(total_current_month*100)} type="customers"/>
     </>
   );
 }
