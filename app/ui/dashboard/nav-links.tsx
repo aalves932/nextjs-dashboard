@@ -14,11 +14,7 @@ import clsx from "clsx";
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: "Home", href: "/dashboard", icon: HomeIcon },
-  {
-    name: "NFS",
-    href: "/dashboard/invoices",
-    icon: DocumentDuplicateIcon,
-  },
+  {name: "NFS", href: "/dashboard/invoices", icon: DocumentDuplicateIcon,},
   { name: "Clientes", href: "/dashboard/customers", icon: UserGroupIcon },
   { name: "Usuários", href: "/dashboard/users", icon: Cog6ToothIcon },
 ];
@@ -27,7 +23,7 @@ export default function NavLinks() {
   const pathname = usePathname();
   return (
     <>
-      {links.map((link) => {
+      {links.map( (link) => {
         const LinkIcon = link.icon;
         return (
           <Link
@@ -41,7 +37,7 @@ export default function NavLinks() {
             )}
           >
             <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
+            <p className="hidden md:block ">{link.name}</p>
           </Link>
         );
       })}
