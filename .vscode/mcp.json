@@ -1,0 +1,23 @@
+{
+	"servers": {
+		"postgres": {
+			"command": "npx",
+			"args": [
+				"@modelcontextprotocol/server-postgres@0.6.2",
+				"postgresql://localhost:5432/protheus"
+			],
+			"env": {},
+			"type": "stdio"
+		},
+		"sigmadb": {
+			"command": "npx",
+			"args": [
+				"@modelcontextprotocol/server-postgres@0.6.2",
+				"postgresql://sigmadb:H$kfCR!2U5@sigmadb.postgresql.dbaas.com.br:5432/sigmadb"
+			],
+			"env": {},
+			"type": "stdio"
+		}
+	},
+	"inputs": []
+}
