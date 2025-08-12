@@ -25,6 +25,28 @@ async function getSigmaDataStats() {
   return data[0];
 }
 
+// Função para consumir a API da Prefeitura
+async function getNotaFiscalPrefeitura(numero: string) {
+  const apiKey = process.env.API_KEY_PMP;
+  const baseUrl = process.env.API_BASE_URL_PMP;
+  if (!apiKey || !baseUrl) {
+    throw new Error('Credenciais da API da Prefeitura não encontradas.');
+  }
+
+  const url = `${baseUrl}/consultar?NumeroNfse=${numero}`;
+  
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `${apiKey}`,
+      "Accept": "application/json",
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Erro ao buscar nota fiscal na Prefeitura');
+  }
+  return response.json();
+}
 
 async function listInvoices() {
 	// Teste: Listar todas as invoices com dados do cliente
@@ -101,8 +123,15 @@ export async function GET(request: Request) {
       case 'sigma-stats':
         result = await getSigmaDataStats();
         break;
+      case 'nota-prefeitura':
+        const numero = searchParams.get('numero');
+        if (!numero) {
+          return Response.json({ error: 'Informe o número da nota fiscal.' }, { status: 400 });
+        }
+        result = await getNotaFiscalPrefeitura(numero);
+        break;
       default:
-        return Response.json({ error: 'Invalid query type. Use: invoices, stats, or customers' }, { status: 400 });
+        return Response.json({ error: 'Invalid query type. Use: invoices, stats, customers, sigma-stats, nota-prefeitura' }, { status: 400 });
     }
     
     return Response.json({ 
